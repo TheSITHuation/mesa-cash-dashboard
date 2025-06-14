@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lobby de Mesas - Skampa Poker Room</title>
+
+    <!-- 1. Cargar tu archivo de estilos principal -->
+    <link rel="stylesheet" href="/assets/styles/lobby.css" />
+
+    <!-- 2. Cargar librerías externas -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Scripts de Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+
+    <!-- Estilos específicos para las tarjetas del lobby -->
+    <style>
+        .lobby-container { display: flex; flex-direction: column; align-items: center; gap: 20px; max-width: 500px; margin: 0 auto; }
+        .lobby-card { background: linear-gradient(145deg, #2D2D2D, #1E1E1E); border: 1px solid rgba(255, 215, 0, 0.2); border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); overflow: hidden; display: flex; flex-direction: column; width: 100%; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: rgba(0, 0, 0, 0.2); }
+        .card-header h3 { margin: 0; font-size: 1.2em; font-weight: 700; }
+        .table-status { display: flex; align-items: center; gap: 8px; font-size: 0.9em; font-weight: 600; padding: 5px 10px; border-radius: 20px; text-transform: uppercase; }
+        .table-status.status-active { background-color: #28a745; }
+        .table-status.status-almost-full { background-color: #ffc107; color: #1B1B1B; }
+        .table-status.status-full { background-color: #dc3545; }
+        .table-status.status-inactive { background-color: #6c757d; }
+        .card-body { padding: 20px; flex-grow: 1; }
+        .card-body ul { list-style: none; padding: 0; margin: 0; }
+        .card-body li { display: flex; align-items: center; font-size: 1.1em; margin-bottom: 15px; }
+        .card-body li:last-child { margin-bottom: 0; }
+        .card-body li i { color: #FFD700; font-size: 1.2em; width: 35px; text-align: center; margin-right: 15px; }
+        .card-body li .label { color: #AAAAAA; margin-right: 8px; }
+        .card-body li .value { font-weight: 600; }
+        .card-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; border-top: 1px solid rgba(255, 215, 0, 0.2); }
+        .card-button { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 12px; border-radius: 8px; border: none; font-family: 'Poppins', sans-serif; font-size: 0.9em; font-weight: 600; text-decoration: none; cursor: pointer; }
+        .button-secondary { background: linear-gradient(145deg, #4A4A4A, #3A3A3A); color: #EAEAEA; border: 1px solid #555; }
+        .button-primary { background: linear-gradient(145deg, #FFD700, #E6C200); color: #1B1B1B; }
+        .no-tables-message { color: #AAAAAA; font-size: 1.2em; text-align: center; padding: 50px 20px; }
+        .swal-players-list { list-style: none; padding: 0; margin: 0; text-align: left; }
+        .swal-players-list li { padding: 8px; border-bottom: 1px solid #444; }
+        .swal-players-list li:last-child { border-bottom: none; }
+        .swal-wide { width: 400px !important; }
+    </style>
+</head>
+<body>
+
+    <header>
+        Lobby de Mesas
+    </header>
+
+    <main class="mainContainer">
+        <div class="lobby-container">
+            <p class="no-tables-message">Conectando a la sala...</p>
+        </div>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("Lobby.js (inline): Iniciando vista de jugador con Firebase.");
+
+        // =================================================================================
+        // CONFIGURACIÓN DE FIREBASE
+        // =================================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtX_lsgN49FPvXwyOslKdFOIjwJDzqqKk",
+            authDomain: "poker-room-2.firebaseapp.com",
+            projectId: "poker-room-2",
+            storageBucket: "poker-room-2.appspot.com",
+            messagingSenderId: "222798291312",
+            appId: "1:222798291312:web:88d22239cbd43e7b26efb5"
+        };
+        // =================================================================================
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const mesasCollection = db.collection("mesas");
+
+        const WHATSAPP_NUMBER = '529931758870'; // <<-- REEMPLAZAR ESTE NÚMERO
+
+        // ——— FUNCIONES AUXILIARES ——————————————————————————————
+
+        function formatTime(seconds) {
+            seconds = typeof seconds === 'number' && !isNaN(seconds) ? seconds : 0;
+            const h = Math.floor(seconds / 3600),
+                  m = Math.floor((seconds % 3600) / 60),
+                  s = seconds % 60;
+            return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }
+
+        function getTableStatusInfo(record) {
+            const totalSeats = 9;
+            if (!record || record.tableStatus === 'inactivo')      return { text: 'Inactiva',      className: 'status-inactive' };
+            if (record.tableStatus === 'pausa')                    return { text: 'En Pausa',      className: 'status-inactive' };
+            if ((record.playerCount || 0) >= totalSeats)           return { text: 'Llena',         className: 'status-full'     };
+            if ((record.playerCount || 0) >= totalSeats - 2)       return { text: 'Casi Llena',    className: 'status-almost-full' };
+            return { text: 'Activa', className: 'status-active' };
+        }
+
+        function escapeHTML(str) {
+            return String(str || '').replace(/[&<>"']/g, m => ({
+                '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+            }[m]));
+        }
+
+        // ——— CREACIÓN DE TARJETA DE LOBBY —————————————————————————
+
+        function createLobbyCardHTML(record) {
+            if (!record) return '';
+            const status        = getTableStatusInfo(record);
+            const playerCount   = record.playerCount   || 0;
+            const waitlistCount = record.waitlistCount || 0;
+            const buyIn         = record.buyinRange     || 'N/A';
+            const elapsed       = formatTime(record.mainTimerSeconds || 0);
+
+            const message      = encodeURIComponent(
+              `Hola, quisiera anotarme en la lista de espera para la Mesa ${record.tableVisualNumber || ''} (Juego: ${record.gameType || 'N/A'}).`
+            );
+            const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+
+            return `
+              <div class="lobby-card" data-table-id="${record.tableId}">
+                <div class="card-header">
+                  <h3>MESA ${escapeHTML(record.tableVisualNumber || 'N/A')}</h3>
+                  <div class="table-status ${status.className}">
+                    <span>${status.text}</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <ul>
+                    <li>
+                      <i class="fa-solid fa-dice-d20"></i>
+                      <span class="label">Juego:</span>
+                      <span class="value">${escapeHTML(record.gameType || 'N/A')}</span>
+                    </li>
+                    <li>
+                      <i class="fa-solid fa-coins"></i>
+                      <span class="label">Ciegas:</span>
+                      <span class="value">${escapeHTML(record.blinds || 'N/A')}</span>
+                    </li>
+                    <li>
+                      <i class="fa-solid fa-money-bill-wave"></i>
+                      <span class="label">Buy-in:</span>
+                      <span class="value">${escapeHTML(buyIn)}</span>
+                    </li>
+
+                    <li>
+                      <i class="fa-solid fa-users"></i>
+                      <span class="label">Jugadores:</span>
+                      <span class="value">${playerCount} / 9</span>
+                    </li>
+                    <li>
+                      <i class="fa-solid fa-hourglass-half"></i>
+                      <span class="label">Espera:</span>
+                      <span class="value">${waitlistCount} personas</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="card-footer">
+                  <button
+                    class="card-button button-secondary view-players-btn"
+                    ${playerCount === 0 ? 'disabled' : ''}
+                    data-table-id="${record.tableId}">
+                      <i class="fa-solid fa-eye"></i> Ver Jugadores
+                  </button>
+                  <a href="${whatsappLink}" class="card-button button-primary" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i> Anotarme
+                  </a>
+                </div>
+              </div>
+            `;
+        }
+
+        // ——— LISTENERS Y RENDER ————————————————————————————————
+
+        function addEventListenersToButtons() {
+            document.querySelectorAll('.view-players-btn').forEach(button => {
+                button.addEventListener('click', async function() {
+                    const tableId = this.dataset.tableId;
+                    const doc = await mesasCollection.doc(tableId).get();
+                    if(!doc.exists) return;
+                    const record = doc.data();
+
+                    if (record.playerCount > 0) {
+                        let playersListHTML = '<ul class="swal-players-list">';
+                        for (let i = 1; i <= 9; i++) {
+                            const playerName = record[`seat_${i}_player`];
+                            if (playerName) playersListHTML += `<li>${escapeHTML(playerName)}</li>`;
+                        }
+                        playersListHTML += '</ul>';
+                        Swal.fire({
+                          title: `Jugadores en Mesa ${record.tableVisualNumber}`,
+                          html: playersListHTML,
+                          confirmButtonText: 'Cerrar',
+                          customClass: { popup: 'swal-wide' }
+                        });
+                    } else {
+                        Swal.fire('Mesa Vacía', 'Aún no hay jugadores en esta mesa.', 'info');
+                    }
+                });
+            });
+        }
+
+        function listenForLobbyUpdates() {
+            const lobbyContainer = document.querySelector('.lobby-container');
+            if (!lobbyContainer) {
+                console.error("Contenedor del lobby no encontrado.");
+                return;
+            }
+
+            mesasCollection.onSnapshot(snapshot => {
+                console.log("Lobby.js: Datos recibidos de Firestore.");
+
+                if (snapshot.empty) {
+                    lobbyContainer.innerHTML = '<p class="no-tables-message">No hay mesas activas en este momento.</p>';
+                    return;
+                }
+
+                const tables = snapshot.docs
+                    .map(doc => doc.data())
+                    .sort((a, b) => (a.tableVisualNumber || 0) - (b.tableVisualNumber || 0));
+
+                lobbyContainer.innerHTML = tables.map(createLobbyCardHTML).join('');
+                addEventListenersToButtons();
+            }, error => {
+                console.error("Error al escuchar actualizaciones:", error);
+                lobbyContainer.innerHTML = '<p class="no-tables-message" style="color:red;">Error de conexión. No se pueden mostrar las mesas.</p>';
+            });
+        }
+
+        listenForLobbyUpdates();
+    });
+    </script>
+</body>
+</html>

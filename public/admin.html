@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestión de Mesas - Skampa Poker Room</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="/assets/styles/staff.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <header>Skampa Poker Room Cash</header>
+
+  <!-- 1️⃣ Formulario de login -->
+  <div id="login-container" style="text-align:center; padding:20px;">
+    <h2>Acceso Staff</h2>
+    <input id="email"    type="email"    placeholder="Email"    /><br/>
+    <input id="password" type="password" placeholder="Contraseña"/><br/>
+    <button id="loginBtn">Entrar</button>
+    <p id="loginError" style="color:red;"></p>
+  </div>
+
+  <!-- 2️⃣ UI del dashboard, oculto hasta después del login -->
+  <div id="dashboard" style="display:none;">
+    <main class="mainContainer" id="mainContainer"></main>
+    <button id="addTableButton"><i class="fas fa-plus-circle"></i> Añadir Nueva Mesa</button>
+    <div class="player-info-card" id="playerInfoCard">…</div>
+  </div>
+
+  <!-- 3️⃣ SDKs Compat de Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+
+  <!-- 4️⃣ Tu lógica de staff, como módulo ES -->
+  <script type="module" src="/assets/js/staff.js"></script>
+</body>
+</html>

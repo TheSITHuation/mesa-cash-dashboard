@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "public",        // apunta a la carpeta donde realmente están index.html, admin.html y assets/
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      { "source": "/admin.html",  "destination": "/admin.html" },
+      { "source": "/index.html",  "destination": "/index.html" },
+      { "source": "**",           "destination": "/index.html" }
+    ]
+  }
+}
