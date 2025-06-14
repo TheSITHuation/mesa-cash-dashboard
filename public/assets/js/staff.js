@@ -7,7 +7,7 @@ import {
   onAuthStateChanged,
   getCurrentRole,
   logout
-} from '../../../src/services/auth.js';
+} from '/src/services/auth.js';
 
 // 1) Ocultamos el login o el dashboard según el estado
 function showLogin() {
