@@ -1,47 +1,85 @@
 // public/src/services/auth.js
-// 1️⃣ Importa directamente desde el CDN de Firebase ESM
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js';
-import {
-  getAuth,
-  onAuthStateChanged as firebaseOnAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut
-} from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
-import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
-// 2️⃣ Configuración (igual que antes)
-const firebaseConfig = {
-      apiKey: "AIzaSyAtX_lsgN49FPvXwyOslKdFOIjwJDzqqKk",
-      authDomain: "poker-room-2.firebaseapp.com",
-      projectId: "poker-room-2",
-      storageBucket: "poker-room-2.firebasestorage.app",
-      messagingSenderId: "222798291312",
-      appId: "1:222798291312:web:88d22239cbd43e7b26efb5"
-    };
+/**
+ * @file Servicio de autenticación para el panel de staff.
+ * Usa el SDK “compat” de Firebase que se carga en admin.html.
+ */
 
-// 3️⃣ Inicializa
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db   = getFirestore(app);
+// ─── Constantes de Roles ─────────────────────────────────────────────────────
 
-// 4️⃣ Exporta tus funciones aprovechando las ESM del CDN
-function onAuthStateChanged(callback) {
-  return firebaseOnAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const tokenResult = await user.getIdTokenResult();
-      user.role = tokenResult.claims.role || 'player';
-    }
-    callback(user);
-  });
-}
-async function login(email, pass) {
-  return (await signInWithEmailAndPassword(auth, email, pass)).user;
-}
-function logout() {
-  return signOut(auth);
-}
-function getCurrentRole(user) {
-  return user?.role || 'player';
-}
+export const ROLE_STAFF  = 'staff';
+export const ROLE_PLAYER = 'player';
 
-export { auth, db, onAuthStateChanged, login, logout, getCurrentRole };
+// ─── Inicialización de Servicios Firebase (compat) ───────────────────────────
+
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+// ─── Cache de roles para minimizar lecturas ─────────────────────────────────
+
+const roleCache = {};
+
+// ─── Funciones exportadas ────────────────────────────────────────────────────
+
+/**
+ * Observa cambios en el estado de autenticación.
+ * @param {(user: import("firebase").User|null) => void} callback
+ * @returns {firebase.Unsubscribe}
+ */
+export const onAuthStateChanged = (callback) =>
+  auth.onAuthStateChanged(callback);
+
+
+/**
+ * Inicia sesión con email y contraseña.
+ * @param {string} email
+ * @param {string} pass
+ * @returns {Promise<import("firebase").User>}
+ * @throws {Error} Si faltan credenciales.
+ */
+export const login = async (email, pass) => {
+  if (!email || !pass) {
+    throw new Error('Email y contraseña son obligatorios');
+  }
+  const { user } = await auth.signInWithEmailAndPassword(email, pass);
+  // Forzamos la renovación del token para obtener los custom claims actualizados
+  await auth.currentUser.getIdToken(true);
+  return user;
+};
+
+
+/**
+ * Cierra la sesión del usuario actual.
+ * @returns {Promise<void>}
+ */
+export const logout = () =>
+  auth.signOut();
+
+
+/**
+ * Obtiene el rol del usuario almacenado en Firestore.
+ * Utiliza cache en memoria para no repetir la lectura.
+ * @param {import("firebase").User} user
+ * @returns {Promise<'staff'|'player'>}
+ */
+export const getCurrentRole = async (user) => {
+  if (!user) {
+    return ROLE_PLAYER;
+  }
+
+  const uid = user.uid;
+  if (roleCache[uid]) {
+    return roleCache[uid];
+  }
+
+  try {
+    const doc = await db.collection('users').doc(uid).get();
+    const role = (doc.exists && doc.data().role) ? doc.data().role : ROLE_PLAYER;
+    roleCache[uid] = role;
+    console.log(`📖 Rol de ${user.email}: ${role}`);
+    return role;
+  } catch (error) {
+    console.error('❌ Error obteniendo rol:', error);
+    return ROLE_PLAYER;
+  }
+};
