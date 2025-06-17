@@ -1,0 +1,63 @@
+// 0️⃣ Importar todas las variables de tokens:
+@use 'tokens' as *;
+
+// 1️⃣ RESET GLOBAL
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// 2️⃣ TIPOGRAFÍA Y BODY
+body {
+  font-family: $font-base;
+  background: linear-gradient(
+    135deg,
+    $panel-bg 0%,
+    $dark-text 100%
+  );
+  
+  color: $light-text;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// 3️⃣ HEADER
+header {
+  background-color: $gold;
+  color: $dark-text;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 10;
+}
+
+// 4️⃣ REJILLA PRINCIPAL DE MESAS
+// public/assets/styles/scss/_layout.scss
+
+.mainContainer {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+  align-content: start;
+}
+
+
+// 5️⃣ MEDIA QUERIES BÁSICAS
+@media (max-width: 600px) {
+  header {
+    font-size: 1.25rem;
+  }
+  .mainContainer {
+    grid-template-columns: 1fr;
+    padding: 0.5rem;
+  }
+}

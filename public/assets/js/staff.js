@@ -23,7 +23,7 @@ const firebaseConfig = {
 };
 
 // --- INICIALIZACIÓN DE FIREBASE (UNA SOLA VEZ) ---
-firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
 const db = firebase.firestore();
 
@@ -296,12 +296,12 @@ function initStaffApp() {
     // --- UI Y EVENTOS ---
     function createTableSection(tableId, data) {
         const tableSection = document.createElement('div');
-        tableSection.classList.add('table-section', 'side-panel-collapsed');
+        tableSection.classList.add('table-section');
         tableSection.dataset.tableId = tableId;
         tableSection.innerHTML = `
-            <button class="delete-table" title="Eliminar Mesa"><i class="fas fa-trash-alt"></i></button>
+            <button class="delete-table btn btn-danger" title="Eliminar Mesa"><i class="fas fa-trash-alt"></i></button>
             <button class="side-panel-toggle-button" title="Mostrar Panel Lateral"><i class="fas fa-chevron-right"></i></button>
-            <div class="side-panel"><h3>Gestión y Espera</h3><div class="side-panel-main-controls"><div class="data-item"><span class="data-icon"><i class="fa-solid fa-hashtag"></i></span><label>Mesa #:</label><span contenteditable="true" class="value value-mesa-display"></span></div><div class="data-item"><span class="data-icon"><i class="fa-solid fa-toggle-on"></i></span><label>Estado:</label><div class="status-control"><select class="value status-select"><option value="${STATUS_INACTIVE}">Inactivo</option><option value="${STATUS_PAUSED}">En Pausa</option><option value="${STATUS_ACTIVE}">Activo</option></select><span class="status-icon">🔴</span></div></div></div><hr class="side-panel-divider"><div class="waitlist-section"><h4>Lista de Espera</h4><div class="waitlist-table-container"><table class="waitlist-table"><tbody></tbody></table></div></div><hr class="side-panel-divider"><div class="side-panel-actions"><button class="add-waitlist-row" title="Añadir Jugador a Lista de Espera"><i class="fas fa-user-plus"></i> Añadir a Lista</button><button class="export-csv-button" title="Exportar Datos a CSV"><i class="fas fa-file-csv"></i> Exportar</button><button class="test-banner-button" title="Probar Banner de Rake"><i class="fas fa-eye"></i> Probar Banner</button></div></div>
+            <div class="side-panel"><h3>Gestión y Espera</h3><div class="side-panel-main-controls"><div class="data-item"><span class="data-icon"><i class="fa-solid fa-hashtag"></i></span><label>Mesa #:</label><span contenteditable="true" class="value value-mesa-display"></span></div><div class="data-item"><span class="data-icon"><i class="fa-solid fa-toggle-on"></i></span><label>Estado:</label><div class="status-control"><select class="value status-select"><option value="${STATUS_INACTIVE}">Inactivo</option><option value="${STATUS_PAUSED}">En Pausa</option><option value="${STATUS_ACTIVE}">Activo</option></select><span class="status-icon">🔴</span></div></div></div><hr class="side-panel-divider"><div class="waitlist-section"><h4>Lista de Espera</h4><div class="waitlist-table-container"><table class="waitlist-table"><tbody></tbody></table></div></div><hr class="side-panel-divider"><div class="side-panel-actions"><button class="add-waitlist-row btn btn-primary" title="Añadir Jugador a Lista de Espera"><i class="fas fa-user-plus"></i> Añadir a Lista</button><button class="export-csv-button btn btn-secundary" title="Exportar Datos a CSV"><i class="fas fa-file-csv"></i> Exportar</button><button class="test-banner-button btn btn-secondary" title="Probar Banner de Rake"><i class="fas fa-eye"></i> Probar Banner</button></div></div>
             <div class="diagram-container"><div class="banner game-type-banner-main"><i class="fa-solid fa-dice-d20"></i>&nbsp;<span contenteditable="true" class="value-juego-ontable"></span></div><div class="table"><img src="https://i.postimg.cc/5yFygKwG/logomjr.png" class="table-felt-logo"><div class="on-table-data-display"><div class="on-table-item blinds-display"><i class="fa-solid fa-coins"></i>&nbsp;<span contenteditable="true" class="value-blinds-ontable"></span></div><div class="on-table-item buyin-display"><i class="fa-solid fa-money-bill-wave"></i>&nbsp;<span contenteditable="true" class="value-buyin-ontable"></span></div><div class="on-table-item active-time-display"><i class="fa-regular fa-clock"></i>&nbsp;<span class="timer-value">00:00:00</span></div><div class="on-table-item available-seats-display"><i class="fa-solid fa-chair"></i>&nbsp;<span class="seats-value">9</span> Asientos Disp.</div></div><div class="rake-banner" style="display: none;">⚠️ ¡Tiempo de Rake! ⚠️</div>${[...Array(9).keys()].map(i => `<div class="seat" data-seat="${i+1}"><div class="seat-content">${i+1}</div></div>`).join('')}<div class="seat" data-seat="10"><img src="" alt="Dealer"></div></div><div class="marquee-banner-container"><div class="marquee-banner-text"></div></div></div>
         `;
         mainContainer.insertBefore(tableSection, addTableButton);

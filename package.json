@@ -1,13 +1,12 @@
 {
-  "dependencies": {
-    "firebase": "^11.9.1",
-    "firebase-admin": "^13.4.0"
-  },
   "name": "mesa-cash",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "build-css": "sass public/assets/styles/scss/main.scss public/assets/styles/css/main.css --style=compressed",
+  "watch-css": "sass --watch public/assets/styles/scss:public/assets/styles/css"
+  
   },
   "repository": {
     "type": "git",
@@ -16,9 +15,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "firebase": "^11.9.1",
+    "firebase-admin": "^13.4.0"
+  },
   "bugs": {
     "url": "https://github.com/TheSITHuation/mesa-cash-dashboard/issues"
   },
-  "homepage": "https://github.com/TheSITHuation/mesa-cash-dashboard#readme",
-  "description": ""
+  "homepage": "https://github.com/TheSITHuation/mesa-cash-dashboard#readme"
 }

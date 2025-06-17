@@ -1,0 +1,301 @@
+@charset "UTF-8";
+/* ================== Design Tokens ================== */
+:root {
+  /* Asientos y mesa */
+  --seat-size: 80px;
+  --seat-size-occupied: 100px;
+  --dealer-size: 85px;
+  --table-width: 800px;
+  --table-height: 400px;
+  --table-border-radius: 200px;
+  /* Logo en la mesa */
+  --felt-logo-width: 70%;
+  --felt-logo-opacity: 0.2;
+  /* Datos sobre la mesa */
+  --on-table-data-font-size: 1.3em;
+  --on-table-data-icon-size: 1.3em;
+  --on-table-data-gap: 7px;
+  --on-table-data-bg: rgba(0,0,0,0.25);
+  --on-table-text-color: #FFFFFF;
+  --on-table-icon-color: #FFD700;
+  /* Panel lateral */
+  --side-panel-width: 350px;
+  /* Colores globales */
+  --color-primary: #FFD700;
+  --color-bg-start: #1B1B1B;
+  --color-bg-end: #333333;
+  --color-text-light: #EAEAEA;
+  --color-text-dark: #1B1B1B;
+  /* Espaciados */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  /* Bordes y sombras */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
+  /* Transiciones */
+  --transition-default: all 0.2s ease-in-out;
+  /* Iconos de botón */
+  --button-icon-size: 1em;
+}
+
+/* Animaciones globales */
+@keyframes ledPulse {
+  0%, 100% {
+    box-shadow: 0 0 6px var(--color-primary), 0 0 10px var(--color-primary), 0 0 1px var(--color-primary);
+  }
+  50% {
+    box-shadow: 0 0 35px var(--color-primary), 0 0 28px var(--color-primary), 0 0 3px var(--color-primary);
+  }
+}
+@keyframes blink {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+  }
+}
+@keyframes marquee-scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+/* ================== Reset Global ================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-base, "Poppins", sans-serif);
+  background: linear-gradient(135deg, var(--color-bg-start), var(--color-bg-end));
+  color: var(--color-text-light);
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: var(--color-primary);
+  color: var(--color-text-dark);
+  padding: var(--space-sm) var(--space-md);
+  font-size: 1.9em;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+header::before {
+  content: "";
+  background: url("https://i.postimg.cc/5yFygKwG/logomjr.png") center/contain no-repeat;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  opacity: 0.15;
+  transform: translate(-50%, -50%);
+}
+
+.mainContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-md);
+  padding: var(--space-md);
+  flex-grow: 1;
+}
+
+@media (max-width: 767px) {
+  .mainContainer {
+    grid-template-columns: 1fr;
+  }
+}
+/* ================== Table Section ================== */
+.table-section {
+  background-color: var(--color-bg-start);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-default);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-section:hover {
+  transform: translateY(-4px);
+}
+
+.table {
+  position: relative;
+  width: var(--table-width);
+  height: var(--table-height);
+  background-color: #0f5132;
+  border: 4px solid var(--color-primary);
+  border-radius: var(--table-border-radius);
+  animation: ledPulse 2.5s infinite alternate;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+  margin: var(--space-sm) auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seat {
+  position: absolute;
+  width: var(--seat-size);
+  height: var(--seat-size);
+  background-color: #444;
+  border: 1px solid var(--color-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-default);
+  z-index: 2;
+}
+
+.seat:not(.occupied):hover {
+  transform: scale(1.1);
+  background-color: var(--color-primary);
+}
+
+.seat.occupied {
+  width: var(--seat-size-occupied);
+  height: var(--seat-size-occupied);
+  background: transparent;
+  border: none;
+}
+
+.seat.occupied .seat-content {
+  font-size: 4em;
+  color: var(--color-text-light);
+}
+
+/* --- Side Panel --- */
+.side-panel {
+  width: var(--side-panel-width);
+  background-color: #282828;
+  border: 1px solid var(--color-primary);
+  border-left: none;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  transition: var(--transition-default);
+  overflow: hidden;
+}
+
+.side-panel-collapsed .side-panel {
+  width: 0;
+  padding: 0;
+  border: none;
+}
+
+/* --- Player Info Card --- */
+.player-info-card {
+  position: fixed;
+  top: var(--space-lg);
+  right: var(--space-md);
+  width: 380px;
+  background-color: #282828;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+  padding: var(--space-md);
+  color: var(--color-text-light);
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition-default);
+}
+
+.player-info-card.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* ================== Utility Classes ================== */
+/* Flexbox helpers */
+.u-flex {
+  display: flex;
+}
+
+.u-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Text helpers */
+.u-text-center {
+  text-align: center;
+}
+
+/* Margin helpers */
+.u-mb-xs {
+  margin-bottom: var(--space-xs);
+}
+
+.u-mb-sm {
+  margin-bottom: var(--space-sm);
+}
+
+.u-mb-md {
+  margin-bottom: var(--space-md);
+}
+
+/* Padding helpers */
+.u-p-xs {
+  padding: var(--space-xs);
+}
+
+.u-p-sm {
+  padding: var(--space-sm);
+}
+
+.u-p-md {
+  padding: var(--space-md);
+}
+
+/* Gap helpers */
+.u-gap-xs {
+  gap: var(--space-xs);
+}
+
+.u-gap-sm {
+  gap: var(--space-sm);
+}
+
+.u-gap-md {
+  gap: var(--space-md);
+}
+
+/* Width helpers */
+.u-w-full {
+  width: 100%;
+}
+
+.u-max-w-sm {
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Aquí puedes poner cualquier override específico */
+.table-section:not(.single-table-mode) {
+  --dealer-size: calc(var(--seat-size) * 0.6);
+}
+
+/*# sourceMappingURL=styles.css.map */

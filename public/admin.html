@@ -6,7 +6,8 @@
   <title>Gestión de Mesas - Skampa Poker Room</title>
 
   <!-- Estilos -->
-  <link rel="stylesheet" href="/assets/styles/staff.css"/>
+  <!-- admin.html (HEAD) -->
+  <link rel="stylesheet" href="/assets/styles/css/main.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
 
@@ -28,16 +29,34 @@
   <!-- 2️⃣ UI del dashboard, oculto hasta después del login -->
   <div id="dashboard" style="display:none;">
     <main class="mainContainer" id="mainContainer"></main>
-    <button id="addTableButton"><i class="fas fa-plus-circle"></i> Añadir Nueva Mesa</button>
+    <button id="addTableButton" class="btn btn-primary">
+    <i class="fas fa-plus-circle"></i> Añadir Nueva Mesa
+  </button>
     <div class="player-info-card" id="playerInfoCard">…</div>
   </div>
 
   <!-- 3️⃣ SDKs Compat de Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+
+  <script>
+  const firebaseConfig = {
+      apiKey: "AIzaSyAtX_lsgN49FPvXwyOslKdFOIjwJDzqqKk",
+      authDomain: "poker-room-2.firebaseapp.com",
+      projectId: "poker-room-2",
+      storageBucket: "poker-room-2.firebasestorage.app",
+      messagingSenderId: "222798291312",
+      appId: "1:222798291312:web:88d22239cbd43e7b26efb5"
+    };
+  firebase.initializeApp(firebaseConfig);
+</script>
+
 
   <!-- 4️⃣ Tu lógica de staff, como módulo ES -->
   <script type="module" src="/assets/js/staff.js"></script>
+
+  <div class="__test-tokens"></div>
+
 </body>
 </html>

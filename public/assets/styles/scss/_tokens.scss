@@ -1,0 +1,39 @@
+// _tokens.scss
+// Aquí van tus "variables" globales: colores, tamaños, fuentes...
+
+// 🎨 Colores
+$gold:           #FFD700;
+$dark-text:      #1B1B1B;
+$light-text:     #EAEAEA;
+$panel-bg:       #282828;
+$table-bg:       #0f5132;
+
+// 📐 Tamaños
+$seat-size:           40px;
+$seat-size-occupied: 100px;
+$dealer-size:        85px;
+$table-width:       800px;
+$table-height:      400px;
+$side-panel-width:  350px;
+
+// 🔤 Tipografías
+$font-base: 'Poppins', sans-serif;
+
+// ⏱ Animaciones / Timing
+$transition-fast: 0.2s ease;
+$transition-med:  0.4s ease;
+
+// 1️⃣ Tamaño y opacidad del logo en la mesa
+$felt-logo-width:   70%   !default;  // Ancho relativo al contenedor .table
+$felt-logo-opacity: 0.1   !default;  // Opacidad del logo
+
+// 2️⃣ Espaciado y colores de los datos on-table
+$on-table-data-gap:     1.25rem               !default;  
+$on-table-data-bg:      rgba(0, 0, 0, 0.25)   !default;
+$on-table-text-color:   #FFFFFF               !default;
+$on-table-icon-color:   #FFD700               !default;
+
+// 3️⃣ (Opcional) Si aún no existen, añade también:
+$table-width: 800px  !default;
+$table-height: 400px  !default;
+$table-border-radius: 200px  !default;

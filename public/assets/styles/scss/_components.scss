@@ -1,0 +1,73 @@
+// scss/_components.scss
+
+// si usas únicamente variables, no necesitas re-importar tokens
+// porque al final todo se compila desde main.scss
+@use 'sass:color';
+@use 'tokens' as *;
+
+
+.button {
+  background-color: $gold;     // viene de tokens
+  color: $dark-text;           // idem
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color .2s;
+}
+
+.button:hover {
+background-color: color.adjust($gold, $lightness: 10%);
+
+}
+// public/assets/styles/scss/_components.scss
+
+// 1️⃣ Variables de apoyo (pueden vivir aquí o en tokens)
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+$btn-padding:     0.5rem 1rem !default;
+$btn-radius:      0.5rem      !default;
+$btn-font-size:   1rem        !default;
+$btn-transition:  background-color 0.2s, transform 0.1s !default;
+
+// 2️⃣ Estilos base para .btn
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: $btn-padding;
+  font-size: $btn-font-size;
+  border-radius: $btn-radius;
+  cursor: pointer;
+  transition: $btn-transition;
+  text-decoration: none;
+  
+  & i { font-size: 1.2em; }
+
+  &:hover { transform: scale(1.02); }
+  &:active { transform: scale(0.98); }
+}
+
+// 3️⃣ Variantes
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+.btn-primary {
+  background-color: $gold;
+  color: $dark-text;
+  border: none;
+  &:hover { background-color: color.adjust($gold, $lightness: -10%); }
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: $light-text;
+  border: 2px solid $gold;
+  &:hover { background-color: rgba($gold, 0.1); }
+}
+
+.btn-danger {
+  background-color: #c0392b;
+  color: #fff;
+  border: none;
+  &:hover { background-color: color.adjust(#c0392b, $lightness: -10%); }
+}

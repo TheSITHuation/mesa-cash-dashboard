@@ -1,0 +1,94 @@
+// public/assets/styles/scss/_diagram.scss
+
+@use 'tokens' as *; // Importa las variables ($seat-size, $dealer-size, $gold, etc.)
+
+// 1️⃣ Contenedor de la zona de la mesa
+.diagram-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+// 2️⃣ Estilos de la propia mesa
+.table {
+  position: relative;
+  width: $table-width;
+  height: $table-height;
+  max-width: 100%;
+  margin: 0 auto 1rem;
+}
+
+// Logo en el centro de la mesa
+.table .table-felt-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: $felt-logo-width;
+  opacity: $felt-logo-opacity;
+  pointer-events: none;
+  z-index: 0;
+}
+
+// Datos encima de la mesa (tiempo, ciegas…)
+.on-table-data-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: --on-table-data-gap;
+  padding: 1rem 2rem;
+  background-color: $on-table-data-bg;
+  border-radius: 1rem;
+  z-index: 1;
+  color: --on-table-text-color;
+}
+
+// 3️⃣ Asientos alrededor de la mesa
+.seat {
+  position: absolute;
+  width: $seat-size;
+  height: $seat-size;
+  background-color: #444;
+  border: 1px solid $gold;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  z-index: 2;
+
+  &.occupied {
+    width: $seat-size-occupied;
+    height: $seat-size-occupied;
+    background-color: transparent;
+    border: none;
+  }
+}
+
+// Posiciones fijas de cada asiento (1–10)
+.seat[data-seat="10"] {
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width:  $dealer-size;
+  height: $dealer-size;
+  background-color: transparent;
+  border: none;
+}
+
+.seat[data-seat="9"]  { top: 15%; left: 25%; transform: translate(-50%, -50%); }
+.seat[data-seat="1"]  { top: 15%; left: 75%; transform: translate(-50%, -50%); }
+.seat[data-seat="8"]  { top: 30%; left:  8%; transform: translate(-50%, -50%); }
+.seat[data-seat="2"]  { top: 30%; left: 92%; transform: translate(-50%, -50%); }
+.seat[data-seat="7"]  { top: 67%; left:  8%; transform: translate(-50%, -50%); }
+.seat[data-seat="3"]  { top: 67%; left: 92%; transform: translate(-50%, -50%); }
+.seat[data-seat="6"]  { top: 85%; left: 25%; transform: translate(-50%, -50%); }
+.seat[data-seat="5"]  { top: 86%; left: 50%; transform: translate(-50%, -50%); }
+.seat[data-seat="4"]  { top: 85%; left: 75%; transform: translate(-50%, -50%); }

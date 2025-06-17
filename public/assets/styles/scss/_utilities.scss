@@ -1,0 +1,18 @@
+// _utilities.scss
+// Mixins y helpers para posicionar y centrar
+@use 'tokens' as *;
+
+// Centra absolutamente un elemento en (%/%)
+@mixin absolute-center($top, $left) {
+  position: absolute;
+  top: $top;
+  left: $left;
+  transform: translate(-50%, -50%);
+}
+
+// Posiciona un asiento dado en coordenadas relativas
+@mixin seat-position($seat-num, $top, $left) {
+  .seat[data-seat="#{$seat-num}"] {
+    @include absolute-center($top, $left);
+  }
+}

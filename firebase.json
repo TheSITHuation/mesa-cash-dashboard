@@ -1,11 +1,9 @@
 {
   "hosting": {
-    "public": "public",        // apunta a la carpeta donde realmente están index.html, admin.html y assets/
-    "ignore": [
-      "firebase.json",
-      ".firebaserc",
-      "**/.*",
-      "**/node_modules/**"
+    "public": "public",
+    "ignore": [ "firebase.json", "**/.*", "**/node_modules/**" ],
+    "predeploy": [
+      "npm run build-css"
     ],
     "rewrites": [
       { "source": "/admin.html",  "destination": "/admin.html" },
@@ -14,3 +12,5 @@
     ]
   }
 }
+
+
