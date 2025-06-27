@@ -1,0 +1,205 @@
+// /scss/_lobby.scss
+
+// Estilos específicos para la página del Lobby.
+// La clase .lobby-page se añade al <body> del index.html
+// para que estos estilos no afecten a otras páginas como admin.html.
+
+.lobby-page {
+    // Definimos las variables de color aquí para mantenerlas encapsuladas.
+    --background-dark: #121212;
+    --panel-bg: #1e1e1e;
+    --gold-accent: #d4af37;
+    --gold-darker: #aa8c2c;
+    --light-text: #e0e0e0;
+    --dark-text: #121212;
+    --green-status: #28a745;
+    --orange-status: #fd7e14;
+    --red-status: #dc3545;
+    --grey-status: #6c757d;
+    --border-color: rgba(212, 175, 55, 0.2);
+    
+    // Aplicamos el fondo con el patrón de logo
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-dark);
+    background-image: url('https://www.transparenttextures.com/patterns/dark-denim-3.png');
+    color: var(--light-text);
+    position: relative;
+    z-index: 1;
+
+    &::before {
+        content: '';
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        z-index: -1;
+        background-image: url('https://i.postimg.cc/5yFygKwG/logomjr.png');
+        background-repeat: repeat;
+        background-size: 200px;
+        transform: rotate(-42deg);
+        opacity: 0.02;
+    }
+
+    // Estilos para el contenedor y las tarjetas del lobby
+    .lobby-container { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        gap: 25px; 
+        max-width: 550px; 
+        margin: 0 auto; 
+    }
+
+    .lobby-card { 
+                // --- INICIO DE LA CORRECCIÓN ---
+        background: rgba(37, 37, 37, 0.75); // Color oscuro con 75% de opacidad
+        -webkit-backdrop-filter: blur(10px); // Desenfoque para Safari
+        backdrop-filter: blur(10px); // Desenfoque estándar para un efecto de "vidrio esmerilado"
+        // --- FIN DE LA CORRECCIÓN ---
+        border: 1px solid var(--border-color);
+        border-radius: 16px; 
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); 
+        overflow: hidden; 
+        display: flex; 
+        flex-direction: column; 
+        width: 100%;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+        }
+    }
+
+    .card-header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 15px 20px; 
+        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.1)), #2a2a2a;
+        border-bottom: 1px solid var(--border-color);
+
+        h3 { 
+            margin: 0; 
+            font-size: 1.3em; 
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+    }
+
+    .table-status { 
+        display: flex; 
+        align-items: center; 
+        gap: 8px; 
+        font-size: 0.8em; 
+        font-weight: 700; 
+        padding: 6px 12px; 
+        border-radius: 20px; 
+        text-transform: uppercase;
+        color: #fff;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+
+        &.status-active { background: linear-gradient(135deg, #1d9e3a, #28a745); }
+        &.status-almost-full { background: linear-gradient(135deg, #e67e22, #fd7e14); }
+        &.status-full { background: linear-gradient(135deg, #c0392b, #dc3545); }
+        &.status-inactive { background: linear-gradient(135deg, #5a6268, #6c757d); }
+    }
+
+    .card-body { 
+        padding: 25px; 
+        flex-grow: 1; 
+
+        ul { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+        }
+
+        li { 
+            display: flex; 
+            align-items: center; 
+            font-size: 1.1em; 
+            margin-bottom: 18px; 
+
+            &:last-child { 
+                margin-bottom: 0; 
+            }
+
+            i { 
+                color: var(--gold-accent); 
+                font-size: 1.3em; 
+                width: 35px; 
+                text-align: center; 
+                margin-right: 15px; 
+                text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            }
+
+            .label { 
+                color: #b0b0b0; 
+                margin-right: 10px; 
+                font-weight: 400;
+            }
+
+            .value { 
+                font-weight: 600; 
+            }
+        }
+    }
+
+    .card-footer { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 15px; 
+        padding: 20px; 
+        background-color: #1c1c1c;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .card-button { 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        gap: 10px; 
+        padding: 12px; 
+        border-radius: 8px; 
+        border: none; 
+        font-family: 'Poppins', sans-serif; 
+        font-size: 0.9em; 
+        font-weight: 600; 
+        text-decoration: none; 
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .no-tables-message { 
+        color: #AAAAAA; 
+        font-size: 1.2em; 
+        text-align: center; 
+        padding: 50px 20px; 
+    }
+
+    // Estilos para SweetAlert
+    .swal2-popup {
+        background-color: var(--panel-bg) !important;
+        color: var(--light-text) !important;
+    }
+    .swal2-title {
+        color: var(--gold-accent) !important;
+    }
+    .swal-players-list { 
+        list-style: none; 
+        padding: 0; 
+        margin: 0; 
+        text-align: left; 
+
+        li { 
+            padding: 10px; 
+            border-bottom: 1px solid #444; 
+
+            &:last-child { 
+                border-bottom: none; 
+            }
+        }
+    }
+}

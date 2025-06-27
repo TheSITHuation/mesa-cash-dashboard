@@ -1,39 +1,42 @@
-// _tokens.scss
+// scss/_tokens.scss
 // Aquí van tus "variables" globales: colores, tamaños, fuentes...
 
 // 🎨 Colores
-$gold:           #FFD700;
-$dark-text:      #1B1B1B;
-$light-text:     #EAEAEA;
-$panel-bg:       #282828;
-$table-bg:       #0f5132;
-
-// 📐 Tamaños
-$seat-size:           40px;
-$seat-size-occupied: 100px;
-$dealer-size:        85px;
-$table-width:       800px;
-$table-height:      400px;
-$side-panel-width:  350px;
+//–––––––––––––––––––––––––––––––––––––––––––––––––––
+$gold:                #FFD700;
+$dark-text:           #1B1B1B;
+$light-text:          #EAEAEA;
+$panel-bg:            #282828;
+$table-bg:            #0f5132;
+$on-table-text-color: #FFFFFF !default;
+$on-table-icon-color: #FFD700 !default;
 
 // 🔤 Tipografías
+//–––––––––––––––––––––––––––––––––––––––––––––––––––
 $font-base: 'Poppins', sans-serif;
+$btn-font-size:   1rem !default;
+
+// 📐 Tamaños y espaciado
+//–––––––––––––––––––––––––––––––––––––––––––––––––––
+$seat-size:           75px;
+$seat-size-occupied:  100px;
+$dealer-size:         80px;
+$table-width:         800px;
+$table-height:        400px;
+$table-border-radius: 200px !default;
+$side-panel-width:    350px;
+$btn-padding:         0.5rem 1rem !default;
+$btn-radius:          0.5rem      !default;
+$on-table-data-gap:   1.25rem !default;
 
 // ⏱ Animaciones / Timing
+//–––––––––––––––––––––––––––––––––––––––––––––––––––
 $transition-fast: 0.2s ease;
 $transition-med:  0.4s ease;
+$btn-transition:  background-color 0.2s, transform 0.1s !default;
 
-// 1️⃣ Tamaño y opacidad del logo en la mesa
-$felt-logo-width:   70%   !default;  // Ancho relativo al contenedor .table
-$felt-logo-opacity: 0.1   !default;  // Opacidad del logo
-
-// 2️⃣ Espaciado y colores de los datos on-table
-$on-table-data-gap:     1.25rem               !default;  
-$on-table-data-bg:      rgba(0, 0, 0, 0.25)   !default;
-$on-table-text-color:   #FFFFFF               !default;
-$on-table-icon-color:   #FFD700               !default;
-
-// 3️⃣ (Opcional) Si aún no existen, añade también:
-$table-width: 800px  !default;
-$table-height: 400px  !default;
-$table-border-radius: 200px  !default;
+// 🖼️ Elementos específicos
+//–––––––––––––––––––––––––––––––––––––––––––––––––––
+$felt-logo-width:   70%  !default;  // Ancho relativo al contenedor .table
+$felt-logo-opacity: 0.1  !default;  // Opacidad del logo
+$on-table-data-bg:  rgba(0, 0, 0, 0.25) !default;

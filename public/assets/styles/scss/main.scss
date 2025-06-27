@@ -1,9 +1,44 @@
+/*
+============================================
+ HOJA DE ESTILOS PRINCIPAL
+============================================
+Este archivo importa todos los demás archivos parciales
+en el orden correcto para generar el CSS final.
+*/
+
+// 1️⃣ Variables, tokens y funciones.
+// Es crucial que esto vaya primero.
+@use 'tokens' as *;
+
+// 2️⃣ Funciones nativas de Sass (si las necesitas).
 @use 'sass:color';
-@use 'tokens'    as *;
-@use 'layout';
-@use 'components';
+
+// 3️⃣ Mixins y helpers.
 @use 'utilities';
-@use 'diagram';  
 
+// 4️⃣ Estructura principal de la página.
+@use 'layout';
 
+// 5️⃣ Componentes reutilizables.
+@use 'components';
 
+@use 'lobby'; 
+// 6️⃣ Estilos específicos del diagrama de la mesa.
+@use 'diagram';
+
+// 7️⃣ Overrides puntuales (si son necesarios).
+.table-section:not(.single-table-mode) {
+    --dealer-size: calc(var(--seat-size) * 0.6);
+}
+
+// Test visual rápido (puedes borrarlo después)
+.__test-tokens {
+    background-color: $gold; // Viene de _tokens.scss
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 9999;
+    border: 3px solid $dark-text; // Borde más grueso para verlo bien
+}

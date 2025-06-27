@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Refresca la página cada 10 minutos para evitar problemas de caché -->
+    <meta http-equiv="refresh" content="600">
+    <title>Display de Mesas - Skampa Poker Room</title>
+    <link rel="stylesheet" href="/assets/styles/css/main.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+    <header>Skampa Poker Room Cash</header>
+
+    <!-- Contenedor principal donde se dibujarán las mesas -->
+    <main class="mainContainer" id="mainContainer"></main>
+
+    <!-- SDKs de Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Módulos de nuestra aplicación -->
+    <script type="module" src="/src/firebase-init.js"></script>
+    <script type="module" src="/assets/js/display.js"></script> <!-- Apunta al nuevo JS -->
+</body>
+</html>

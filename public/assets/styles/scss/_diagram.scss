@@ -1,23 +1,30 @@
-// public/assets/styles/scss/_diagram.scss
+// scss/_diagram.scss
 
-@use 'tokens' as *; // Importa las variables ($seat-size, $dealer-size, $gold, etc.)
+@use 'tokens' as *;
+@use 'sass:color';
 
-// 1️⃣ Contenedor de la zona de la mesa
+// Contenedor de la zona de la mesa
 .diagram-container {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem;
+  min-width: 400px; // Evita que se encoja demasiado
 }
 
-// 2️⃣ Estilos de la propia mesa
+// Estilos de la propia mesa (AHORA VISIBLE)
 .table {
   position: relative;
-  width: $table-width;
-  height: $table-height;
-  max-width: 100%;
-  margin: 0 auto 1rem;
+  width: 100%;
+  max-width: $table-width;
+  aspect-ratio: 2 / 1;
+  margin: 0 auto;
+  // --- ESTILOS PARA HACER LA MESA VISIBLE ---
+  background-color: $table-bg;
+  border-radius: $table-border-radius;
+  border: 10px solid darken($table-bg, 10%);
+  box-shadow: inset 0 0 25px rgba(0,0,0,0.5);
 }
 
 // Logo en el centro de la mesa
@@ -32,7 +39,7 @@
   z-index: 0;
 }
 
-// Datos encima de la mesa (tiempo, ciegas…)
+// Datos encima de la mesa
 .on-table-data-display {
   position: absolute;
   top: 50%;
@@ -41,15 +48,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: --on-table-data-gap;
+  gap: $on-table-data-gap;
   padding: 1rem 2rem;
   background-color: $on-table-data-bg;
   border-radius: 1rem;
   z-index: 1;
-  color: --on-table-text-color;
+  color: $on-table-text-color;
 }
 
-// 3️⃣ Asientos alrededor de la mesa
+// Asientos alrededor de la mesa
 .seat {
   position: absolute;
   width: $seat-size;
@@ -63,26 +70,25 @@
   cursor: pointer;
   transition: transform 0.2s, background-color 0.2s;
   z-index: 2;
+  overflow: hidden;
 
   &.occupied {
     width: $seat-size-occupied;
     height: $seat-size-occupied;
     background-color: transparent;
-    border: none;
+    border: 1.5px solid $gold;
+  }
+
+  // Controla la imagen del jugador
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
-// Posiciones fijas de cada asiento (1–10)
-.seat[data-seat="10"] {
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width:  $dealer-size;
-  height: $dealer-size;
-  background-color: transparent;
-  border: none;
-}
-
+// Posiciones fijas de cada asiento
+.seat[data-seat="10"] { top: 10%; left: 50%; transform: translate(-50%, -50%); width: $dealer-size; height: $dealer-size; background-color: transparent; border: none; }
 .seat[data-seat="9"]  { top: 15%; left: 25%; transform: translate(-50%, -50%); }
 .seat[data-seat="1"]  { top: 15%; left: 75%; transform: translate(-50%, -50%); }
 .seat[data-seat="8"]  { top: 30%; left:  8%; transform: translate(-50%, -50%); }

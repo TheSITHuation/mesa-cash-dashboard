@@ -1,62 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gestión de Mesas - Skampa Poker Room</title>
-
-  <!-- Estilos -->
-  <!-- admin.html (HEAD) -->
-  <link rel="stylesheet" href="/assets/styles/css/main.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
-
-  <!-- SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Gestión de Mesas - Skampa Poker Room</title>
+    <link rel="stylesheet" href="/assets/styles/css/main.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-  <header>Skampa Poker Room Cash</header>
+    <header>Skampa Poker Room Cash</header>
 
-  <!-- 1️⃣ Formulario de login -->
-  <div id="login-container" style="text-align:center; padding:20px;">
-    <h2>Acceso Staff</h2>
-    <input id="email"    type="email"    placeholder="Email"    /><br/>
-    <input id="password" type="password" placeholder="Contraseña"/><br/>
-    <button id="loginBtn">Entrar</button>
-    <p id="loginError" style="color:red;"></p>
-  </div>
+    <div id="login-container" style="text-align:center; padding:20px;">
+        <h2>Acceso Staff</h2>
+        <input type="email" id="email" placeholder="Email" style="margin: 5px; padding: 8px; width: 200px;">
+        <br>
+        <input type="password" id="password" placeholder="Contraseña" style="margin: 5px; padding: 8px; width: 200px;">
+        <br>
+        <button id="loginBtn" class="btn btn-primary" style="margin-top: 10px;">Iniciar Sesión</button>
+    </div>
 
-  <!-- 2️⃣ UI del dashboard, oculto hasta después del login -->
-  <div id="dashboard" style="display:none;">
-    <main class="mainContainer" id="mainContainer"></main>
-    <button id="addTableButton" class="btn btn-primary">
-    <i class="fas fa-plus-circle"></i> Añadir Nueva Mesa
-  </button>
-    <div class="player-info-card" id="playerInfoCard">…</div>
-  </div>
+    <div id="dashboard" style="display:none;">
+        <main class="mainContainer" id="mainContainer"></main>
+        
+        <button id="addTableButton" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Añadir Nueva Mesa
+        </button>
 
-  <!-- 3️⃣ SDKs Compat de Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+        <button id="publicViewBtn" class="btn btn-secondary" style="display: none;">
+            <i class="fas fa-eye"></i> Modo Público General
+        </button>
+        
+    </div>
 
-  <script>
-  const firebaseConfig = {
-      apiKey: "AIzaSyAtX_lsgN49FPvXwyOslKdFOIjwJDzqqKk",
-      authDomain: "poker-room-2.firebaseapp.com",
-      projectId: "poker-room-2",
-      storageBucket: "poker-room-2.firebasestorage.app",
-      messagingSenderId: "222798291312",
-      appId: "1:222798291312:web:88d22239cbd43e7b26efb5"
-    };
-  firebase.initializeApp(firebaseConfig);
-</script>
+    <div id="player-card-modal-overlay" class="modal-overlay">
+        <div class="player-card-modal">
+            <div id="player-card-avatar" class="player-card-avatar"></div>
+            <h3 id="player-card-name"></h3>
+            <div id="player-card-details" class="player-card-details"></div>
+            <button id="player-card-close" class="btn btn-danger">Cerrar</button>
+        </div>
+    </div>
 
 
-  <!-- 4️⃣ Tu lógica de staff, como módulo ES -->
-  <script type="module" src="/assets/js/staff.js"></script>
-
-  <div class="__test-tokens"></div>
-
+    <!-- --- INICIO DE LA CORRECCIÓN --- -->
+    <!-- 1. Restauramos las librerías de Firebase aquí -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+    
+    <!-- 2. Inicializamos la conexión -->
+    <script type="module" src="/src/firebase-init.js"></script>
+    
+    <!-- 3. Ejecutamos la lógica de la aplicación -->
+    <script type="module" src="/assets/js/staff.js"></script>
+    <!-- --- FIN DE LA CORRECCIÓN --- -->
 </body>
 </html>

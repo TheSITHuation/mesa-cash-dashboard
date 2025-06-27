@@ -1,35 +1,12 @@
 // scss/_components.scss
 
-// si usas únicamente variables, no necesitas re-importar tokens
-// porque al final todo se compila desde main.scss
-@use 'sass:color';
+// Cada archivo debe importar las herramientas que necesita.
 @use 'tokens' as *;
+@use 'sass:color';
 
+// NOTA: Las variables para los botones se han movido a _tokens.scss
 
-.button {
-  background-color: $gold;     // viene de tokens
-  color: $dark-text;           // idem
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color .2s;
-}
-
-.button:hover {
-background-color: color.adjust($gold, $lightness: 10%);
-
-}
-// public/assets/styles/scss/_components.scss
-
-// 1️⃣ Variables de apoyo (pueden vivir aquí o en tokens)
-// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-$btn-padding:     0.5rem 1rem !default;
-$btn-radius:      0.5rem      !default;
-$btn-font-size:   1rem        !default;
-$btn-transition:  background-color 0.2s, transform 0.1s !default;
-
-// 2️⃣ Estilos base para .btn
+// Estilos base para la clase .btn
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 .btn {
   display: inline-flex;
@@ -42,14 +19,14 @@ $btn-transition:  background-color 0.2s, transform 0.1s !default;
   cursor: pointer;
   transition: $btn-transition;
   text-decoration: none;
-  
+
   & i { font-size: 1.2em; }
 
   &:hover { transform: scale(1.02); }
   &:active { transform: scale(0.98); }
 }
 
-// 3️⃣ Variantes
+// Variantes de color y estilo
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 .btn-primary {
   background-color: $gold;
@@ -70,4 +47,112 @@ $btn-transition:  background-color 0.2s, transform 0.1s !default;
   color: #fff;
   border: none;
   &:hover { background-color: color.adjust(#c0392b, $lightness: -10%); }
+}
+// /scss/_components.scss
+
+// Estilos para el nuevo componente de botones de radio
+.radio-inputs {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 0.5rem;
+    background-color: #404040; // Un fondo neutro más oscuro
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4) inset;
+    box-sizing: border-box;
+    padding: 0.25rem;
+    width: 100%;
+    font-size: 14px;
+    transition: background-color .3s ease-in-out;
+
+    // --- INICIO DE LA MEJORA DE COLORES ---
+    // Cambiamos el color de fondo del contenedor según la opción seleccionada
+    &.status-activo {
+        background-color: #27ae60; // Verde
+    }
+    &.status-pausa {
+        background-color: #2980b9; // Azul
+    }
+    &.status-inactivo {
+        background-color: #f39c12; // Naranja/Amarillo
+    }
+    // --- FIN DE LA MEJORA DE COLORES ---
+
+    .radio {
+        flex: 1 1 auto;
+        text-align: center;
+
+        input {
+            display: none; // Ocultamos el radio button por defecto
+        }
+
+        .name {
+            display: flex;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            border: none;
+            padding: 0.5rem 0;
+            color: rgba(230, 230, 230, 0.9);
+            transition: all .15s ease-in-out;
+            // Quitamos el texto para dejar solo los iconos
+            font-size: 0; 
+
+            // Icono del círculo
+            &::before {
+                content: '';
+                display: block;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background-color: #fff;
+                opacity: 0.3;
+                transition: all .15s ease-in-out;
+            }
+        }
+
+        // Estilo para el botón seleccionado
+        input:checked + .name {
+            color: #fff;
+            
+            &::before {
+                opacity: 1;
+                // Icono de checkmark
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='20 6 9 17 4 12'%3e%3c/polyline%3e%3c/svg%3e");
+                background-position: center;
+                background-size: 60%;
+                background-repeat: no-repeat;
+            }
+        }
+    }
+}
+
+// --- Player Info Card ---
+
+.player-info-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.player-info-card-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  & > * {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.player-info-card-name {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.player-info-card-body p {
+  margin-bottom: var(--space-xs);
 }

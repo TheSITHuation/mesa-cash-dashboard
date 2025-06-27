@@ -1,6 +1,8 @@
 // _utilities.scss
 // Mixins y helpers para posicionar y centrar
-@use 'tokens' as *;
+@use 'tokens' as *;     // para variables
+@use 'sass:color';      // si usas color.adjust(), color.lighten(),…
+
 
 // Centra absolutamente un elemento en (%/%)
 @mixin absolute-center($top, $left) {
