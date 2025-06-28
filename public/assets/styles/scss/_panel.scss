@@ -1,12 +1,12 @@
 // scss/_panel.scss
 
 @use 'tokens' as *;
-@use "sass:color";
+@use 'sass:color';
 
 .side-panel {
   position: fixed;
   top: 0;
-  left: -$side-panel-width; // Oculto por defecto
+  left: 0;
   width: $side-panel-width;
   height: 100vh;
   background-color: color.adjust($gold, $lightness: -15%);
@@ -15,8 +15,17 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  transition: left 0.3s ease;
-  z-index: 100;
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 1000;
+
+  &[data-open="true"] {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
 
   h4 {
     color: $dark-text;
@@ -45,18 +54,19 @@
   }
 }
 
-// Zona sensible para activar el panel (oculta visualmente pero activa al pasar el cursor)
-.panel-hover-zone {
-  position: fixed;
+.panel-trigger-zone {
+  position: absolute;
   top: 0;
   left: 0;
-  height: 100vh;
-  width: 10px;
-  z-index: 99;
-}
+  width: 16px; // Aumentado para mejorar la usabilidad
+  height: 100%;
+  z-index: 999;
+  cursor: pointer;
+  background-color: transparent; // Invisible pero funcional
 
-// Al hacer hover en la zona, mostrar el panel
-.panel-hover-zone:hover + .side-panel,
-.side-panel:hover {
-  left: 0;
+  &:hover ~ .side-panel {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
 }

@@ -3,55 +3,80 @@
 @use 'tokens' as *;
 @use "sass:color";
 
-.waitlist {
-  background-color: $panel-bg;
-  color: $light-text;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  max-height: 300px;
+// /src/styles/_waitlist.scss
+
+.public-waitlist-container, .waitlist-section {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.public-waitlist-container h3,
+.waitlist-section h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.waitlist-table-container,
+.public-waitlist {
+  background: #1e1e1e;
+  border-radius: 6px;
+  overflow: hidden;
+  max-height: 240px;
   overflow-y: auto;
+  padding: 0.25rem;
+}
 
-  h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-    color: $gold;
-  }
+.waitlist-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #eee;
+  font-size: 0.9rem;
+}
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.waitlist-table td {
+  padding: 0.4rem 0.6rem;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-    li {
-      padding: 0.5rem 1rem;
-      border-bottom: 1px solid color.adjust($panel-bg, $lightness: 10%);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background-color 0.3s ease;
+.waitlist-table tr:last-child td {
+  border-bottom: none;
+}
 
-      &:hover {
-        background-color: color.adjust($panel-bg, $lightness: 5%);
-      }
+.waitlist-action-button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 0.25rem;
+  transition: transform 0.2s ease;
+}
 
-      .player-name {
-        font-weight: 500;
-      }
+.waitlist-action-button:hover {
+  transform: scale(1.1);
+  color: #FFD700;
+}
 
-      .join-btn {
-        background-color: $gold;
-        color: $dark-text;
-        border: none;
-        padding: 0.25rem 0.75rem;
-        border-radius: 0.25rem;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: background-color 0.2s ease;
+.waitlist-actions .btn-icon {
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  background: #333;
+  border-radius: 4px;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  cursor: pointer;
+}
 
-        &:hover {
-          background-color: color.adjust($gold, $lightness: -10%);
-        }
-      }
-    }
-  }
+.waitlist-actions .btn-icon:hover {
+  background-color: #FFD700;
+  color: #000;
 }
