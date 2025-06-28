@@ -1,0 +1,88 @@
+// scss/_mesa.scss
+
+@use 'tokens' as *;
+@use "sass:color";
+
+.mesa-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 5vh;
+  background-color: $table-bg;
+}
+
+.mesa {
+  position: relative;
+  z-index: 1;
+}
+
+.table-section {
+  position: relative;
+  width: 100%;
+  max-width: $table-width;
+  background-color: $table-bg;
+  border-radius: $table-border-radius;
+  padding: 2rem;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.table-seats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  justify-items: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.seat {
+  width: $seat-size;
+  height: $seat-size;
+  border-radius: 50%;
+  background-color: #333;
+  border: 2px solid $gold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $light-text;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color $transition-fast;
+
+  &.occupied {
+background-color: color.adjust($gold, $lightness: -15%);
+    color: $dark-text;
+  }
+}
+
+.dealer {
+  width: $dealer-size;
+  height: $dealer-size;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid $gold;
+}
+
+.table-info {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  color: $on-table-text-color;
+  font-size: 0.9rem;
+  background-color: $on-table-data-bg;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  z-index: 2;
+}

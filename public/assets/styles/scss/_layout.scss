@@ -2,457 +2,230 @@
 
 @use 'tokens' as *;
 @use 'sass:color';
+@use 'mesa';
+@use 'panel';
+@use 'buttons';
+@use 'modal';
+
 
 *, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: $font-base;
-    background-color: #121212; /* Nuevo fondo oscuro */
-    background-image: url('https://www.transparenttextures.com/patterns/dark-denim-3.png');
-    color: $light-text;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden; /* Previene scroll horizontal */
-    position: relative; /* Necesario para el patrón */
-    z-index: 1;
+  font-family: $font-base;
+  background-color: #121212;
+  background-image: url('https://www.transparenttextures.com/patterns/dark-denim-3.png');
+  color: $light-text;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background-image: url('https://i.postimg.cc/5yFygKwG/logomjr.png');
-    background-repeat: repeat;
-    background-size: 200px;
-    transform: rotate(-42deg) scale(2); /* Ajustado para cubrir toda la pantalla */
-    opacity: 0.02;
-    pointer-events: none; /* Asegura que no interfiera con los clics */
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url('https://i.postimg.cc/5yFygKwG/logomjr.png');
+  background-repeat: repeat;
+  background-size: 200px;
+  transform: rotate(-42deg) scale(2);
+  opacity: 0.02;
+  pointer-events: none;
 }
 
-// 🎨 Scroll personalizado global - estilo invisible
+// Scroll personalizado
 * {
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
 }
 
 *::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  width: 6px;
+  height: 6px;
 }
 
 *::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
-    background: transparent;
-    transition: background 0.3s ease;
+  background: transparent;
+  transition: background 0.3s ease;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-    background: $gold;
+  background: $gold;
 }
 
 header {
-    background-color: $gold;
-    color: $dark-text;
-    padding: 1rem;
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
-    z-index: 10;
+  background-color: $gold;
+  color: $dark-text;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 10;
 }
 
 #dashboard {
-    flex: 1;
-    display: flex;
-    position: relative;
-    overflow: hidden;
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
 }
 
-// Contenedor principal
 .mainContainer {
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    padding: 1rem;
-    align-content: flex-start;
-    transition: all 0.3s ease;
-    overflow-y: auto;
-    max-height: 100vh;
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  align-content: flex-start;
+  overflow-y: auto;
+  max-height: 100vh;
 
-    &.single-table-view {
-        padding: 0;
-        gap: 0;
-        flex-direction: column;
-        height: 100vh;
-        width: 100vw;
+  &.single-table-view {
+    padding: 0;
+    gap: 0;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
 
-        .table-section {
-            border-radius: 0;
-            box-shadow: none;
-            flex: 1;
-            height: 100%;
-            width: 100%;
-            transform: none !important;
-            aspect-ratio: auto;
-            // Hacemos el fondo transparente en la vista de pantalla completa para que no se vea el blur
-            background-color: transparent;
-            background-image: none; // Quitamos la textura de paño también
-            border: none;
-        }
-
-        .diagram-wrapper {
-            padding: 0;
-        }
+    .table-section {
+      border-radius: 0;
+      box-shadow: none;
+      flex: 1;
+      height: 100%;
+      width: 100%;
+      transform: none !important;
+      aspect-ratio: auto;
+      background-color: transparent;
+      background-image: none;
+      border: none;
     }
+
+    .diagram-wrapper {
+      padding: 0;
+    }
+  }
 }
 
 .table-section {
-    position: relative;
-    display: flex;
+  position: relative;
+  display: flex;
+  width: 100%;
+  border-radius: 1rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  background-color: #0d3a2d;
+  background-image: url('https://www.transparenttextures.com/patterns/green-fibers.png');
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  aspect-ratio: 16 / 8;
+
+  .diagram-wrapper {
     width: 100%;
-    border-radius: 1rem;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
-    transition: all 0.3s ease;
-    
-    // --- INICIO DE LA MODIFICACIÓN ---
-    // Efecto de paño de mesa
-    background-color: #0d3a2d; // Un verde de póker oscuro como base
-    background-image: url('https://www.transparenttextures.com/patterns/green-fibers.png'); // Textura sutil de fieltro
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    aspect-ratio: 16 / 8;
-    // --- FIN DE LA MODIFICACIÓN ---
-
-    // Contenedor interno que SÍ respeta el padding.
-    .diagram-wrapper {
-        width: 100%;
-        height: 100%;
-        padding: 1.5rem;
-        box-sizing: border-box; 
-    }
-
-    // El diagrama simplemente llena el espacio que el wrapper le deja.
-    .mesa-diagram {
-        width: 100%;
-        height: 100%;
-        transform: none;
-    }
-}
-
-// --- MEJORA: Zona de activación para el panel ---
-.panel-trigger-zone {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 20px;
     height: 100%;
-    z-index: 16;
+    padding: 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .mesa-diagram {
+    width: 100%;
+    height: 100%;
+    transform: none;
+  }
 }
 
-.side-panel {
-    width: 0; // Inicia contraído
-    padding-left: 0;
-    padding-right: 0;
-    border-right-width: 0;
-    opacity: 0;
-    background-color: $panel-bg;
-    display: flex;
-    flex-direction: column;
-    transition: width 0.35s ease, opacity 0.3s ease 0.1s;
-    z-index: 15;
-    flex-shrink: 0;
-    overflow: hidden;
-
-    .panel-header, .panel-content, .panel-footer {
-        min-width: calc(#{$side-panel-width} - 2rem);
-        transition: opacity 0.2s ease;
-    }
-
-    .panel-header {
-        padding: 0.75rem 1.5rem;
-        border-bottom: 1px solid rgba($gold, 0.2);
-        h3 { font-size: 1.25rem; font-weight: 600; }
-    }
-    .panel-content {
-        max-height: calc(100vh - 200px); // Ajusta según layout
-    }
-
-    .panel-footer {
-        padding: 0.75rem;
-        border-top: 1px solid rgba($gold, 0.2);
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.75rem;
-    }
-}
- 
-// --- MEJORA: El panel se expande al pasar el cursor ---
-.panel-trigger-zone:hover + .side-panel,
-.side-panel:hover {
-    width: $side-panel-width;
-    border-right: 1px solid rgba($gold, 0.3);
-    opacity: 1;
+.panel-trigger-zone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 100%;
+  z-index: 16;
 }
 
 .diagram-container {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.4s ease;
-    padding: 1rem;
-    min-width: 0;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  min-width: 0;
 }
 
-
-// Estilos para la nueva estructura del panel
 .data-item {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-    gap: 0.5rem 1rem;
-    margin-bottom: 1rem;
-    label { 
-        font-weight: 600; 
-        color: rgba($light-text, 0.7);
-        grid-column: 2;
-    }
-    .data-icon { 
-        color: $gold; 
-        font-weight: bold;
-        font-size: 1.2rem;
-        grid-row: 1 / 3;
-    }
-    .value {
-        grid-column: 2;
-        font-size: 1.1rem;
-    }
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
+
+  label {
+    font-weight: 600;
+    color: rgba($light-text, 0.7);
+    grid-column: 2;
+  }
+
+  .data-icon {
+    color: $gold;
+    font-size: 1.2rem;
+    grid-row: 1 / 3;
+  }
+
+  .value {
+    grid-column: 2;
+    font-size: 1.1rem;
+  }
 }
 
-.status-control { 
-    display: flex; 
-    align-items: center; 
-    gap: 0.75rem;
-    
-    select {
-        background-color: darken($panel-bg, 5%);
-        color: $light-text;
-        border: 1px solid rgba($gold, 0.5);
-        border-radius: 4px;
-        padding: 0.3rem 0.5rem;
-        font-family: $font-base;
-        -webkit-appearance: none;
-        appearance: none;
-        cursor: pointer;
-    }
-}
-
-.waitlist-section {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow: hidden;
+.status-control select {
+  background-color: color.adjust($panel-bg, $lightness: 5%);
+  color: $light-text;
+  border: 1px solid rgba($gold, 0.5);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  font-family: $font-base;
+  cursor: pointer;
 }
 
 
-.waitlist-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    flex-shrink: 0;
-    h4 {
-        flex-grow: 1;
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: $gold;
-    }
-    .waitlist-actions {
-        display: flex;
-        gap: 0.5rem;
-    }
-}
-
-.waitlist-table-container {
-    flex-grow: 1;
-    overflow-y: auto;
-    height: 100%;
-    min-height: 0;
-
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
-}
-
-.waitlist-table-container::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-.waitlist-table-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.waitlist-table-container::-webkit-scrollbar-thumb {
-    background: transparent;
-    transition: background 0.3s ease;
-}
-
-.waitlist-table-container:hover::-webkit-scrollbar-thumb {
-    background: $gold;
-}
-
-.waitlist-table {
-    width: 100%;
-    border-collapse: collapse;
-    td {
-        padding: 0.75rem 0.5rem;
-        border-bottom: 1px solid rgba($light-text, 0.1);
-    }
-    .waitlist-action-button {
-        background: transparent;
-        border: none;
-        color: rgba($light-text, 0.6);
-        cursor: pointer;
-        padding: 0.25rem 0.5rem;
-        transition: color 0.2s ease;
-        &:hover {
-            color: $gold;
-        }
-    }
-}
-
-// Botones de ícono
-.btn-icon {
-    background: transparent;
-    border: 1px solid rgba($gold, 0.5);
-    color: rgba($light-text, 0.8);
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    &:hover {
-        background: rgba($gold, 0.2);
-        color: $gold;
-        border-color: $gold;
-    }
+#addTableButton,
+#publicViewBtn {
+  position: fixed;
+  z-index: 100;
 }
 
 #addTableButton {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 100;
+  bottom: 2rem;
+  right: 2rem;
 }
 
 #publicViewBtn {
-    position: fixed;
-    top: 15px;
-    right: 20px;
-    z-index: 101;
+  top: 15px;
+  right: 20px;
 }
 
 
-// Modal de Ficha de Jugador
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-
-    &.visible {
-        opacity: 1;
-        pointer-events: all;
-    }
-}
-
-.player-card-modal {
-    background-color: $panel-bg;
-    border: 1px solid $gold;
-    border-radius: $btn-radius;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-    padding: 1.5rem;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    transform: scale(0.9);
-    transition: transform 0.3s ease;
-
-    .modal-overlay.visible & {
-        transform: scale(1);
-    }
-
-    .player-card-avatar {
-        width: 250px;
-        height: 250px;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 1.5px solid $gold;
-        margin: 0 auto 1rem;
-        background-color: #222;
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    }
-
-    h3 {
-        color: $gold;
-        font-size: 1.75rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .player-card-details {
-        text-align: left;
-        margin-bottom: 1.5rem;
-        p {
-            margin: 0.5rem 0;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        strong { font-weight: 600; }
-        i.fas { color: $gold; width: 20px; text-align: center; }
-        hr { border: none; border-top: 1px solid rgba($gold, 0.3); margin: 0.75rem 0; }
-    }
-}
-
-// --- BLOQUE RESPONSIVO ADICIONAL ---
 @media (max-width: 950px) {
   .mainContainer {
     flex-direction: column;
     padding: 0.5rem;
     gap: 1rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 5rem);
+    padding-bottom: 6rem;
   }
 
   .table-section {
@@ -473,6 +246,12 @@ header {
 }
 
 @media (max-width: 600px) {
+  .mainContainer {
+    overflow-y: auto;
+    max-height: calc(100vh - 4rem);
+    padding-bottom: 7rem;
+  }
+
   .mesa-diagram .seat {
     width: 40px !important;
     height: 40px !important;
@@ -488,36 +267,8 @@ header {
     padding: 0.5rem !important;
     min-height: 300px !important;
   }
-
-  .mainContainer {
-    padding-bottom: 5rem;
-  }
-
-  #addTableButton {
-    bottom: 1rem;
-    right: 1rem;
-    font-size: 0.9rem;
-    padding: 0.5rem 0.75rem;
-  }
-}
-@media (max-width: 950px) {
-  .mainContainer {
-    flex-direction: column;
-    padding: 0.5rem;
-    gap: 1rem;
-    overflow-y: auto;
-    max-height: calc(100vh - 5rem); // Ajuste de espacio útil en móvil
-    padding-bottom: 6rem; // Previene que el botón flotante tape la última mesa
-  }
 }
 
-@media (max-width: 600px) {
-  .mainContainer {
-    overflow-y: auto;
-    max-height: calc(100vh - 4rem);
-    padding-bottom: 7rem;
-  }
-}
 .mesa-nueva {
   animation: resplandorMesa 2s ease-out;
   box-shadow: 0 0 0px 4px rgba(255, 215, 0, 0.8);
