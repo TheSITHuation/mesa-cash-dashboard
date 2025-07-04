@@ -1,0 +1,85 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  padding: 20px;
+}
+
+.table-selector {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-selector select {
+  padding: 8px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  min-width: 250px;
+}
+
+.table-section {
+  flex: 3;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.management-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #f44336;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.loading, .unauthorized, .no-tables, .no-table-selected {
+  text-align: center;
+  padding: 40px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+.no-tables button {
+  margin-top: 20px;
+}
+
+/* Responsive */
+@media (min-width: 992px) {
+  .dashboard-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .table-selector {
+    width: 100%;
+  }
+  
+  .table-section {
+    margin-right: 20px;
+    margin-bottom: 0;
+  }
+  
+  .management-section {
+    min-width: 300px;
+    max-width: 400px;
+  }
+}

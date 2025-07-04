@@ -1,26 +1,25 @@
 {
-  "name": "mesa-cash",
+  "name": "mesa-cash-web",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-  "build-css": "sass public/assets/styles/scss/main.scss public/assets/styles/css/main.css --style=compressed",
-  "watch-css": "sass --watch public/assets/styles/scss:public/assets/styles/css"
-  
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && firebase deploy --only hosting",
+    "build-css": "sass src/assets/styles/scss/main.scss src/assets/styles/css/main.css --style=compressed",
+    "watch-css": "sass --watch src/assets/styles/scss:src/assets/styles/css"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TheSITHuation/mesa-cash-dashboard.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "firebase": "^11.9.1",
-    "firebase-admin": "^13.4.0"
+    "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.5.2"
   },
-  "bugs": {
-    "url": "https://github.com/TheSITHuation/mesa-cash-dashboard/issues"
-  },
-  "homepage": "https://github.com/TheSITHuation/mesa-cash-dashboard#readme"
+  "devDependencies": {
+    "@babel/preset-react": "^7.27.1",
+    "@vitejs/plugin-react": "^4.6.0",
+    "vite": "^5.4.19"
+  }
 }

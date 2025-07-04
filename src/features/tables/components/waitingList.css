@@ -1,0 +1,114 @@
+/* src/features/tables/components/WaitingList.css */
+
+/* Contenedor principal */
+.waiting-list-panel {
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulario para agregar jugadores */
+.add-player-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.add-player-form input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.add-player-form input:focus {
+  outline: none;
+  border-color: #2196F3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+}
+
+/* Mensajes de error */
+.error-message {
+  color: #f44336;
+  background-color: #ffebee;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+/* Lista de jugadores */
+.player-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+/* Item de jugador en espera */
+.waiting-player {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  transition: all 0.2s ease;
+}
+
+.waiting-player:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Contenedor de botones */
+.actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+
+/* Estilos para los botones de asiento */
+.actions button {
+  font-size: 0.7rem;
+  padding: 4px 6px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actions button:hover {
+  background-color: #e0e0e0;
+  border-color: #ccc;
+}
+
+.actions button:active {
+  transform: scale(0.98);
+}
+
+/* Botones específicos para asientos ocupados */
+.actions button.occupied {
+  background-color: #ffebee;
+  color: #f44336;
+  cursor: not-allowed;
+}
+
+/* Título */
+.waiting-list-panel h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 18px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+.actions button.occupied {
+  background-color: #ffebee;
+  color: #f44336;
+  cursor: not-allowed;
+}
